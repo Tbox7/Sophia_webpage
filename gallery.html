@@ -314,10 +314,7 @@
         <p class="footer-note">© 2025 Book Haven Bookstore. All rights reserved.</p>
     </footer>
     <script>
-    // Initialize the cart from sessionStorage or as an empty array
     const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-
-    // Function to show notifications
     function showNotification(message) {
         const notification = document.getElementById('notification');
         notification.textContent = message;
@@ -326,31 +323,23 @@
             notification.style.display = 'none';
         }, 3000);
     }
-
-    // Function to update sessionStorage with the current cart
     function updateSessionStorage() {
         sessionStorage.setItem('cart', JSON.stringify(cart));
     }
-
-    // Add items to the cart
     document.querySelectorAll('.gallery-item button').forEach((button) => {
         button.addEventListener('click', () => {
             const item = button.parentElement.querySelector('p').textContent;
             cart.push(item);
-            updateSessionStorage(); // Update sessionStorage
+            updateSessionStorage(); 
             showNotification('Item added to cart.');
         });
     });
-
-    // Modal and cart management
     const cartModal = document.getElementById('cart-modal');
     const cartItems = document.getElementById('cart-items');
     const viewCartButton = document.querySelector('.cart-button');
     const clearCartButton = document.getElementById('clear-cart');
     const processOrderButton = document.getElementById('process-order');
     const closeModalButton = document.getElementById('close-modal');
-
-    // View cart functionality
     viewCartButton.addEventListener('click', () => {
         cartItems.innerHTML = '';
         if (cart.length === 0) {
@@ -364,33 +353,26 @@
         }
         cartModal.style.display = 'flex';
     });
-
-    // Clear cart functionality
     clearCartButton.addEventListener('click', () => {
         cart.length = 0;
-        updateSessionStorage(); // Clear sessionStorage
+        updateSessionStorage(); 
         showNotification('Cart cleared.');
         cartModal.style.display = 'none';
     });
 
-    // Process order functionality
     processOrderButton.addEventListener('click', () => {
         if (cart.length === 0) {
             showNotification('Your cart is empty.');
         } else {
             showNotification('Thanks for your order!');
             cart.length = 0;
-            updateSessionStorage(); // Clear sessionStorage
+            updateSessionStorage(); 
             cartModal.style.display = 'none';
         }
     });
-
-    // Close modal functionality
     closeModalButton.addEventListener('click', () => {
         cartModal.style.display = 'none';
     });
-
-    // Close modal when clicking outside the modal content
     window.addEventListener('click', (event) => {
         if (event.target === cartModal) {
             cartModal.style.display = 'none';
