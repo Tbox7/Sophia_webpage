@@ -106,24 +106,24 @@
         }
         .footer-content {
             display: flex;
-            justify-content: space-between; /* Distribute sections evenly */
-            align-items: center; /* Align items vertically in the center */
-            flex-wrap: wrap; /* Ensure responsiveness on smaller screens */
+            justify-content: space-between; 
+            align-items: center; 
+            flex-wrap: wrap; 
             margin-bottom: 20px;
         }
         .footer-content div {
-            flex: 1; /* Allow sections to take equal space */
-            text-align: center; /* Center-align the text within each section */
+            flex: 1;
+            text-align: center; 
             margin: 10px;
         }
         .newsletter {
-            text-align: center; /* Center-align the Subscribe section */
+            text-align: center; 
         }
         .social-media {
-            text-align: left; /* Align Follow Us section to the left */
+            text-align: left; 
         }
         .quick-links {
-            text-align: right; /* Align Quick Links section to the right */
+            text-align: right; 
         }
         .footer-content h3 {
             margin-bottom: 10px;
@@ -234,47 +234,45 @@
         <p class="footer-note">© 2025 Book Haven Bookstore. All rights reserved.</p>
     </footer>
     <script>
-        // Handle form submission
+     
         document.getElementById('feedback-form').addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent the form from refreshing the page
+            event.preventDefault(); 
 
-            // Get the values from the form fields
+        
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const comment = document.getElementById('comment').value;
 
-            // Store the values in sessionStorage
+            
             sessionStorage.setItem('name', name);
             sessionStorage.setItem('email', email);
             sessionStorage.setItem('comment', comment);
 
-            // Display a confirmation message
+
             alert('Thank you for your feedback! Your information has been saved.');
 
-            // Optionally, clear the form fields
             document.getElementById('feedback-form').reset();
         });
 
-        // Optional: Retrieve and log the stored data (for debugging purposes)
+
         console.log('Name:', sessionStorage.getItem('name'));
         console.log('Email:', sessionStorage.getItem('email'));
         console.log('Comment:', sessionStorage.getItem('comment'));
     </script>
     <script>
-        // Handle newsletter form submission
+     
         document.getElementById('newsletter-form').addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent the form from refreshing the page
+            event.preventDefault();
 
-            // Get the email value
+       
             const email = document.querySelector('#newsletter-form input').value;
 
-            // Store the email in sessionStorage
+
             sessionStorage.setItem('newsletterEmail', email);
 
-            // Display a confirmation message
             alert('Thank you for subscribing to our newsletter!');
 
-            // Optionally, clear the form field
+
             document.querySelector('#newsletter-form input').value = '';
         });
     </script>
