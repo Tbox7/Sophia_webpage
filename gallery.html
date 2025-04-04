@@ -141,6 +141,76 @@
             font-size: 16px;
             z-index: 1000;
         }
+        footer {
+            background-color: #2E4057;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-top: 40px;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .footer-content div {
+            flex: 1;
+            text-align: center;
+            margin: 10px;
+        }
+        .newsletter {
+            text-align: center;
+        }
+        .social-media {
+            text-align: left;
+        }
+        .quick-links {
+            text-align: right;
+        }
+        .footer-content h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .footer-content a {
+            color: #C8B65E;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 16px;
+            display: inline-block;
+        }
+        .footer-content a:hover {
+            text-decoration: underline;
+        }
+        .footer-note {
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        #newsletter-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #newsletter-form input {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 4px;
+            width: 80%;
+            max-width: 300px;
+        }
+        #newsletter-form button {
+            background-color: #C8B65E;
+            color: #2E4057;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #newsletter-form button:hover {
+            background-color: #FFF7EE;
+        }
     </style>
 </head>
 <body>
@@ -218,65 +288,114 @@
             <button id="close-modal">Close</button>
         </div>
     </div>
+    <footer>
+        <div class="footer-content">
+            <div class="social-media">
+                <h3>Follow Us</h3>
+                <a href="https://facebook.com" target="_blank">Facebook</a>
+                <a href="https://twitter.com" target="_blank">Twitter</a>
+                <a href="https://instagram.com" target="_blank">Instagram</a>
+            </div>
+            <div class="newsletter">
+                <h3>Subscribe to Our Newsletter</h3>
+                <form id="newsletter-form">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+            <div class="quick-links">
+                <h3>Quick Links</h3>
+                <a href="index.html">Home</a>
+                <a href="about.html">About Us</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="recc.html">Upcoming Events</a>
+            </div>
+        </div>
+        <p class="footer-note">© 2025 Book Haven Bookstore. All rights reserved.</p>
+    </footer>
     <script>
-        const cart = [];
-        function showNotification(message) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.style.display = 'block';
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
-        }
-        document.querySelectorAll('.gallery-item button').forEach((button, index) => {
-            button.addEventListener('click', () => {
-                const item = button.parentElement.querySelector('p').textContent;
-                cart.push(item);
-                showNotification('Item added to cart.');
-            });
-        });
-        const cartModal = document.getElementById('cart-modal');
-        const cartItems = document.getElementById('cart-items');
-        const viewCartButton = document.querySelector('.cart-button');
-        const clearCartButton = document.getElementById('clear-cart');
-        const processOrderButton = document.getElementById('process-order');
-        const closeModalButton = document.getElementById('close-modal');
+    // Initialize the cart from sessionStorage or as an empty array
+    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
 
-        viewCartButton.addEventListener('click', () => {
-            cartItems.innerHTML = '';
-            if (cart.length === 0) {
-                cartItems.innerHTML = '<li>Your cart is empty.</li>';
-            } else {
-                cart.forEach(item => {
-                    const li = document.createElement('li');
-                    li.textContent = item;
-                    cartItems.appendChild(li);
-                });
-            }
-            cartModal.style.display = 'flex';
+    // Function to show notifications
+    function showNotification(message) {
+        const notification = document.getElementById('notification');
+        notification.textContent = message;
+        notification.style.display = 'block';
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000);
+    }
+
+    // Function to update sessionStorage with the current cart
+    function updateSessionStorage() {
+        sessionStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    // Add items to the cart
+    document.querySelectorAll('.gallery-item button').forEach((button) => {
+        button.addEventListener('click', () => {
+            const item = button.parentElement.querySelector('p').textContent;
+            cart.push(item);
+            updateSessionStorage(); // Update sessionStorage
+            showNotification('Item added to cart.');
         });
-        clearCartButton.addEventListener('click', () => {
+    });
+
+    // Modal and cart management
+    const cartModal = document.getElementById('cart-modal');
+    const cartItems = document.getElementById('cart-items');
+    const viewCartButton = document.querySelector('.cart-button');
+    const clearCartButton = document.getElementById('clear-cart');
+    const processOrderButton = document.getElementById('process-order');
+    const closeModalButton = document.getElementById('close-modal');
+
+    // View cart functionality
+    viewCartButton.addEventListener('click', () => {
+        cartItems.innerHTML = '';
+        if (cart.length === 0) {
+            cartItems.innerHTML = '<li>Your cart is empty.</li>';
+        } else {
+            cart.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                cartItems.appendChild(li);
+            });
+        }
+        cartModal.style.display = 'flex';
+    });
+
+    // Clear cart functionality
+    clearCartButton.addEventListener('click', () => {
+        cart.length = 0;
+        updateSessionStorage(); // Clear sessionStorage
+        showNotification('Cart cleared.');
+        cartModal.style.display = 'none';
+    });
+
+    // Process order functionality
+    processOrderButton.addEventListener('click', () => {
+        if (cart.length === 0) {
+            showNotification('Your cart is empty.');
+        } else {
+            showNotification('Thanks for your order!');
             cart.length = 0;
-            showNotification('Cart cleared.');
+            updateSessionStorage(); // Clear sessionStorage
             cartModal.style.display = 'none';
-        });
-        processOrderButton.addEventListener('click', () => {
-            if (cart.length === 0) {
-                showNotification('Your cart is empty.');
-            } else {
-                showNotification('Thanks for your order!');
-                cart.length = 0;
-                cartModal.style.display = 'none';
-            }
-        });
-        closeModalButton.addEventListener('click', () => {
+        }
+    });
+
+    // Close modal functionality
+    closeModalButton.addEventListener('click', () => {
+        cartModal.style.display = 'none';
+    });
+
+    // Close modal when clicking outside the modal content
+    window.addEventListener('click', (event) => {
+        if (event.target === cartModal) {
             cartModal.style.display = 'none';
-        });
-        window.addEventListener('click', (event) => {
-            if (event.target === cartModal) {
-                cartModal.style.display = 'none';
-            }
-        });
-    </script>
+        }
+    });
+</script>
 </body>
 </html>
